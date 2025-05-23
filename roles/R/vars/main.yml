@@ -1,3 +1,0 @@
-# roles/R/vars/main.yml
-
-r_target_version: "4.5.0"

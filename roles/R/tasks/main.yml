@@ -1,22 +1,33 @@
+---
 # roles/R/tasks/main.yml
-# (Assuming r_target_version is defined in roles/R/vars/main.yml or defaults/main.yml,
-# or passed as a variable to this 'R' role from local.yml)
 
-- name: Include appsilon.r_language to install R {{ r_target_version | default('4.5.0') }}
+- name: "Install R version {{ r_target_version }} using appsilon.r_language role"
   become: true
-  include_role:
+  ansible.builtin.include_role:
     name: appsilon.r_language
   vars:
-    r_versions:
-      - "{{ r_target_version | default('4.5.0') }}"
+    r_versions: # This is the var expected by appsilon.r_language
+      - "{{ r_target_version }}"
+    # If appsilon.r_language allows configuring its install prefix to match
+    # your r_install_base_path, you could pass that too.
+    # For now, we assume it defaults to /opt/R or is not easily changed by its own vars.
 
-- name: Ensure R {{ r_target_version | default('4.5.0') }} is in the system PATH
+- name: "Ensure symlink target directory {{ r_symlink_target_dir }} exists"
   become: true
   ansible.builtin.file:
-    src: "/opt/R/{{ r_target_version | default('4.5.0') }}/bin/{{ item }}"
-    dest: "/usr/local/bin/{{ item }}"
+    path: "{{ r_symlink_target_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: "Create symlinks for R {{ r_target_version }} executables in {{ r_symlink_target_dir }}"
+  become: true
+  ansible.builtin.file:
+    src: "{{ r_install_base_path }}/{{ r_target_version }}/bin/{{ item }}"
+    dest: "{{ r_symlink_target_dir }}/{{ item }}"
     state: link
-    force: yes
-  loop:
-    - R
-    - Rscript
+    force: yes # Overwrite if symlink exists or is a different type of file
+    mode: '0755' # Permissions for the symlink itself
+  loop: "{{ r_executables_to_symlink }}"
+  loop_control:
+    label: "Symlinking {{ item }} for R {{ r_target_version }}"
+
