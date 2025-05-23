@@ -37,24 +37,24 @@ The role performs the following steps (detailed in `tasks/main.yml`):
 The main variables for this role are defined in `vars/main.yml` (or can be overridden in `defaults/main.yml` or when calling the role). Key variables include:
 
 - `nerdfont_name`: The name of the Nerd Font to install (e.g., `"Hack"`, `"FiraCode"`, `"JetBrainsMono"`). This must match a font name available in the Nerd Fonts releases.
-
--     Default: `"JetBrainsMono"` (as per your `vars/main.yml`)
+  
+  - Default: `"JetBrainsMono"` (as per your `vars/main.yml`)
 
 - `nerdfont_version`: The tagged version of the Nerd Font to download (e.g., `"v3.2.1"`, `"v3.4.0"`). Check the Nerd Fonts releases page for available versions.
 
--     Default: `"v3.4.0"` (as per your `vars/main.yml`)
+  - Default: `"v3.4.0"` (as per your `vars/main.yml`)
 
 - `user_font_dir`: The base directory for user-specific fonts.
 
--     Default: `{{ ansible_env.HOME }}/.local/share/fonts`
+  - Default: `{{ ansible_env.HOME }}/.local/share/fonts`
 
 - `nerdfont_install_subdir_name`: The name of the subdirectory created for this font.
 
--     Default: `{{ nerdfont_name }}NerdFont`
-
+  - Default: `{{ nerdfont_name }}NerdFont`
+  
 - `nerdfont_install_path`: The full path where the font will be installed.
 
--     Default: `{{ user_font_dir }}/{{ nerdfont_install_subdir_name }}`
+  - Default: `{{ user_font_dir }}/{{ nerdfont_install_subdir_name }}`
 
 Usage
 
