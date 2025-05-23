@@ -33,7 +33,7 @@
     # Add user.name and user.email to .gitconfig
     - role: git
 
-    # Add neovim and Obsidian via flatpak
+    # Add and Obsidian via flatpak
     - role: flatpak
 
     # Add kitty terminal
@@ -44,6 +44,9 @@
 
     # Add JetBrainsMono Nerd Font
     - role: nerdfont
+
+    # Add neovim via ansible-galazy gikeymarcia.neovim role
+    - role: gikeymarcia.neovim role
 
     # Add docker via ansible-galaxy geerlingguy.docker
     - role: geerlingguy.docker
