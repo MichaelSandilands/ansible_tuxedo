@@ -1,0 +1,4 @@
+# roles/flatpak/vars/main.yml
+flatpak_packages:
+  - io.neovim.nvim
+  - md.obsidian.Obsidian

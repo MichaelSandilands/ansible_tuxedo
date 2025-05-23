@@ -32,3 +32,6 @@
 
     # Add user.name and user.email to .gitconfig
     - role: git
+
+    # Add neovim and Obsidian via flatpak
+    - role: flatpak
