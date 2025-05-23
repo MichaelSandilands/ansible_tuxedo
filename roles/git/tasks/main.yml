@@ -1,0 +1,12 @@
+# roles/git/tasks/main.yml
+- name: Set global git user.name
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "MichaelSandilands"
+
+- name: Set global git user.email
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "michael.b.sandilands@gmail.com"
