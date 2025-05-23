@@ -1,5 +1,5 @@
 ---
-# file: roles/x/vars/main.yml
+# file: roles/apt/vars/main.yml
 # this will absolutely be used in this role
 dev_tools:
   - build-essential

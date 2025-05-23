@@ -27,3 +27,6 @@
 
     # Install common developer tools
     - role: apt
+
+    # Add ssh key and config
+    - role: ssh
