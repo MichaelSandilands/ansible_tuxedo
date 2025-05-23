@@ -51,4 +51,7 @@
       vars:
         docker_users:
           - "{{ ansible_user_id }}" # Adds the current ansible user to the docker group
-      
+
+    # Add quarto via ansible-galaxy Appsilon.quarto
+    - role: Appsilon.quarto
+      become: true
