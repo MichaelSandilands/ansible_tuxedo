@@ -1,4 +1,4 @@
-# ~/dev/ansible_tuxedo/playbook.yml
+# local.yml
 
 ---
 - name: Provision local Tuxedo OS machine for development

@@ -1,6 +1,6 @@
 # roles/apt/tasks/main.yml
 - name: Provision local Tuxedo OS machine with development available via apt
-  become: yes  # Use sudo for tasks that require elevated privileges
+  become: true  # Use sudo for tasks that require elevated privileges
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
