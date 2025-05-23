@@ -46,7 +46,7 @@
     - role: nerdfont
 
     # Add neovim via ansible-galazy gikeymarcia.neovim role
-    - role: gikeymarcia.neovim role
+    - role: gikeymarcia.neovim
 
     # Add docker via ansible-galaxy geerlingguy.docker
     - role: geerlingguy.docker
