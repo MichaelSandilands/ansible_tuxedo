@@ -1,0 +1,22 @@
+# roles/R/tasks/main.yml
+# (Assuming r_target_version is defined in roles/R/vars/main.yml or defaults/main.yml,
+# or passed as a variable to this 'R' role from local.yml)
+
+- name: Include appsilon.r_language to install R {{ r_target_version | default('4.5.0') }}
+  become: true
+  include_role:
+    name: appsilon.r_language
+  vars:
+    r_versions:
+      - "{{ r_target_version | default('4.5.0') }}"
+
+- name: Ensure R {{ r_target_version | default('4.5.0') }} is in the system PATH
+  become: true
+  ansible.builtin.file:
+    src: "/opt/R/{{ r_target_version | default('4.5.0') }}/bin/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    state: link
+    force: yes
+  loop:
+    - R
+    - Rscript
