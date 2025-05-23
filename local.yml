@@ -44,3 +44,11 @@
 
     # Add JetBrainsMono Nerd Font
     - role: nerdfont
+
+    # Add docker via ansible-galaxy geerlingguy.docker
+    - role: geerlingguy.docker
+      become: true
+      vars:
+        docker_users:
+          - "{{ ansible_user_id }}" # Adds the current ansible user to the docker group
+      
