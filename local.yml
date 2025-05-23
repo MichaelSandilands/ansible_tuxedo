@@ -1,0 +1,35 @@
+# ~/dev/ansible_tuxedo/playbook.yml
+
+---
+- name: Provision local Tuxedo OS machine for development
+  hosts: local # Target the 'local' group defined in hosts.ini
+
+  pre-tasks:
+    - name: Update apt cache
+      become: true
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade all installed packages
+      become: true
+      ansible.builtin.apt:
+        upgrade: dist
+
+    - name: Add the Gnome flatpak remote to the system installation
+      community.general.flatpak_remote:
+        name: gnome
+        state: present
+        flatpakrepo_url: https://sdk.gnome.org/gnome-apps.flatpakrepo
+
+    - name: Add the flathub flatpak repository remote to the user installation
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        method: user
+
+  roles:
+
+    # Install common developer tools
+    - role: apt
