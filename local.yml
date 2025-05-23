@@ -38,3 +38,9 @@
 
     # Add kitty terminal
     - role: kitty
+
+    # Add starship prompt
+    - role: starship
+
+    # Add JetBrainsMono Nerd Font
+    - role: nerdfont

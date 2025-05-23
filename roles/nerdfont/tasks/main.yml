@@ -1,0 +1,55 @@
+# roles/nerdfont/tasks/main.yml
+
+- name: Ensure user font directory exists
+  ansible.builtin.file:
+    path: "{{ user_font_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Check if Nerd Font is already installed (by checking install subdirectory)
+  ansible.builtin.stat:
+    path: "{{ nerdfont_install_path }}"
+  register: nerdfont_install_path_stat
+
+- name: Debug nerdfont_install_path_stat
+  ansible.builtin.debug:
+    var: nerdfont_install_path_stat
+  when: false # Set to true for debugging this role
+
+- name: Download {{ nerdfont_name }} Nerd Font archive
+  ansible.builtin.get_url:
+    url: "{{ nerdfont_download_url }}"
+    dest: "{{ nerdfont_tmp_download_path }}"
+    mode: '0644'
+  when: not nerdfont_install_path_stat.stat.exists
+  register: download_nerdfont_result
+
+- name: Ensure Nerd Font install subdirectory exists
+  ansible.builtin.file:
+    path: "{{ nerdfont_install_path }}"
+    state: directory
+    mode: '0755'
+  when: not nerdfont_install_path_stat.stat.exists
+
+- name: Unarchive {{ nerdfont_name }} Nerd Font
+  ansible.builtin.unarchive:
+    src: "{{ nerdfont_tmp_download_path }}"
+    dest: "{{ nerdfont_install_path }}" # Extracts directly into the named subdirectory
+    remote_src: yes # Indicates that 'src' is on the remote machine (where it was downloaded)
+    # extra_opts: [--strip-components=1] # Use if the zip file has a single top-level directory with the font name
+                                       # For Nerd Font zips, they usually extract their contents directly.
+  when: not nerdfont_install_path_stat.stat.exists or download_nerdfont_result.changed # Run if not installed or if a new version was just downloaded
+  register: unarchive_nerdfont_result
+
+- name: Clean up downloaded Nerd Font archive
+  ansible.builtin.file:
+    path: "{{ nerdfont_tmp_download_path }}"
+    state: absent
+  when: download_nerdfont_result.changed # Only clean up if we actually downloaded something
+
+- name: Rebuild font cache
+  ansible.builtin.command:
+    cmd: fc-cache -fv
+  changed_when: false # fc-cache doesn't provide reliable change output for Ansible
+  when: unarchive_nerdfont_result.changed # Only run if fonts were actually unarchived/updated
+
