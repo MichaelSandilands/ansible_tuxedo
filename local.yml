@@ -58,3 +58,4 @@
 
     # Add R via ansible-galaxy appsilon.r_language
     - role: R
+      become: true

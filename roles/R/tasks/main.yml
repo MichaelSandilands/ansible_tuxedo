@@ -2,7 +2,6 @@
 # roles/R/tasks/main.yml
 
 - name: "Install R version {{ r_target_version }} using appsilon.r_language role"
-  become: true
   ansible.builtin.include_role:
     name: appsilon.r_language
   vars:
@@ -13,14 +12,12 @@
     # For now, we assume it defaults to /opt/R or is not easily changed by its own vars.
 
 - name: "Ensure symlink target directory {{ r_symlink_target_dir }} exists"
-  become: true
   ansible.builtin.file:
     path: "{{ r_symlink_target_dir }}"
     state: directory
     mode: '0755'
 
 - name: "Create symlinks for R {{ r_target_version }} executables in {{ r_symlink_target_dir }}"
-  become: true
   ansible.builtin.file:
     src: "{{ r_install_base_path }}/{{ r_target_version }}/bin/{{ item }}"
     dest: "{{ r_symlink_target_dir }}/{{ item }}"
