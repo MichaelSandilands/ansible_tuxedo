@@ -35,3 +35,6 @@
 
     # Add neovim and Obsidian via flatpak
     - role: flatpak
+
+    # Add kitty terminal
+    - role: kitty
