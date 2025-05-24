@@ -11,12 +11,20 @@
   register: devpod_current_version_cmd_output
   when: devpod_binary_stat.stat.exists
   changed_when: false
-  failed_when: false # Don't fail if version command fails (e.g., old version)
+  failed_when: false # Don't fail if version command fails (e.g., old version or file not executable yet)
 
 - name: "Parse current DevPod version string"
   ansible.builtin.set_fact:
-    devpod_current_version_string: "{{ devpod_current_version_cmd_output.stdout | regex_search('devpod version ([\\d\\.]+)', '\\1') | first | default('') }}"
-  when: devpod_binary_stat.stat.exists and devpod_current_version_cmd_output.stdout is defined
+    devpod_current_version_string: >-
+      {% if devpod_current_version_cmd_output.stdout is not none and
+            devpod_current_version_cmd_output.stdout | trim != "" %}
+      {{ devpod_current_version_cmd_output.stdout | regex_search('devpod version ([\\d\\.]+)', '\\1') | first | default('') }}
+      {% else %}
+      {{ '' }}
+      {% endif %}
+  when:
+    - devpod_binary_stat.stat.exists
+    - devpod_current_version_cmd_output is defined # Ensures the command task actually ran and registered its output
 
 - name: "Determine if DevPod installation/update is needed"
   ansible.builtin.set_fact:

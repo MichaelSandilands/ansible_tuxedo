@@ -1,0 +1,30 @@
+# roles/lazygit/defaults/main.yml
+
+# Set a specific version or use "latest" to try to get the most recent.
+# Find versions at: https://github.com/jesseduffield/lazygit/releases
+lazygit_version: "latest" # Or a specific version like "0.50.0"
+
+# Base URL for Lazygit releases on GitHub
+lazygit_github_releases_url: "https://github.com/jesseduffield/lazygit/releases"
+
+# Architecture mapping for download URLs
+lazygit_arch_map:
+  x86_64: "x86_64"
+  amd64: "x86_64" # Common alias for x86_64
+  aarch64: "arm64"
+  arm64: "arm64"
+
+lazygit_architecture_suffix: "{{ lazygit_arch_map[ansible_architecture] | default('x86_64') }}"
+
+# Lazygit filename pattern on GitHub releases
+# e.g., lazygit_0.50.0_Linux_x86_64.tar.gz
+lazygit_archive_name_template: "lazygit_{{ lazygit_effective_version }}_Linux_{{ lazygit_architecture_suffix }}.tar.gz"
+
+# Installation directory for the lazygit binary
+lazygit_install_dir: "/usr/local/bin"
+lazygit_install_path: "{{ lazygit_install_dir }}/lazygit"
+
+# Temporary download path
+lazygit_tmp_archive_path: "/tmp/lazygit_download.tar.gz"
+lazygit_tmp_extract_path: "/tmp/lazygit_extracted"
+
