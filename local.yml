@@ -72,6 +72,10 @@
 
     # Add miniconda via ansible-galazy andrewrothstein.miniconda role
     - role: andrewrothstein.miniconda
-      become: true
       vars:
-        miniconda_escalate: false
+        miniconda_prefix: "/home/{{ ansible_user_id }}/miniconda3"
+        miniconda_owner: "{{ ansible_user_id }}"
+        miniconda_group: "{{ ansible_user_gid }}"
+        miniconda_escalate: false # Installer runs as ansible_user_id
+        miniconda_update_rc: true
+        miniconda_auto_activate_base: false
