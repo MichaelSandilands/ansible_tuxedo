@@ -72,10 +72,19 @@
 
     # Add miniconda via ansible-galazy andrewrothstein.miniconda role
     - role: andrewrothstein.miniconda
+      become: true
       vars:
-        miniconda_prefix: "/home/{{ ansible_user_id }}/miniconda3"
-        miniconda_owner: "{{ ansible_user_id }}"
-        miniconda_group: "{{ ansible_user_gid }}"
-        miniconda_escalate: false # Installer runs as ansible_user_id
-        miniconda_update_rc: true
-        miniconda_auto_activate_base: false
+        miniconda_escalate: true # Install as root to /opt/miniconda3
+        miniconda_update_rc: false # Prevent the role from running conda init as root
+
+    - name: Initialize Miniconda for user {{ ansible_user_id }}
+      become: true # To switch user
+      become_user: "{{ ansible_user_id }}"
+      ansible.builtin.command: "/opt/miniconda3/bin/conda init bash" # Specify shells
+      changed_when: true # conda init modifies files
+      environment: # Important for conda init to find user's home
+        HOME: "/home/{{ ansible_user_id }}"
+        USER: "{{ ansible_user_id }}"
+      args:
+        # Ensure .bashrc etc. are found in user's home
+        chdir: "/home/{{ ansible_user_id }}"
