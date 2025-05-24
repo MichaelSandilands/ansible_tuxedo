@@ -21,7 +21,3 @@ roles:
     # You can specify a version if needed, e.g.:
     # version: 0.1.4
 
-  # Miniconda
-  - src: andrewrothstein.miniconda
-    # You can specify a version if needed, e.g.:
-    # version: 6.4.1
