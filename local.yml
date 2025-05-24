@@ -72,5 +72,6 @@
 
     # Add miniconda via ansible-galazy andrewrothstein.miniconda role
     - role: andrewrothstein.miniconda
+      become: true
       vars:
         miniconda_escalate: false
