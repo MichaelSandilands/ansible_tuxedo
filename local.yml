@@ -71,20 +71,17 @@
     - role: lazygit
 
     # Add miniconda via ansible-galazy andrewrothstein.miniconda role
+    # In local.yml
     - role: andrewrothstein.miniconda
-      become: true
+      # become: true # May not be needed at the role level if all paths are user-writable
+                  # and the role doesn't have other pre-flight tasks requiring root.
+                  # However, the role might still attempt to install dependencies like 'bash'.
+                  # For safety, start with become: true, and if it works, you could test without.
       vars:
-        miniconda_escalate: true # Install as root to /opt/miniconda3
-        miniconda_update_rc: false # Prevent the role from running conda init as root
-
-    - name: Initialize Miniconda for user {{ ansible_user_id }}
-      become: true # To switch user
-      become_user: "{{ ansible_user_id }}"
-      ansible.builtin.command: "/opt/miniconda3/bin/conda init bash" # Specify shells
-      changed_when: true # conda init modifies files
-      environment: # Important for conda init to find user's home
-        HOME: "/home/{{ ansible_user_id }}"
-        USER: "{{ ansible_user_id }}"
-      args:
-        # Ensure .bashrc etc. are found in user's home
-        chdir: "/home/{{ ansible_user_id }}"
+        miniconda_prefix: "/home/{{ ansible_user_id }}/miniconda3"  # Install into michael's home
+        miniconda_owner: "{{ ansible_user_id }}"                 # Owned by michael
+        miniconda_group: "{{ ansible_user_gid }}"                # Group michael
+        miniconda_escalate: false             # IMPORTANT: Run the installer script as michael, not root
+        miniconda_update_rc: true             # Allow the role to run 'conda init' for miniconda_owner
+        miniconda_auto_activate_base: false # Optional: recommended
+        # miniconda_init_shells: ['bash', 'zsh'] # Specify shells for conda init (optional, role has defaults)
