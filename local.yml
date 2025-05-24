@@ -69,3 +69,8 @@
 
     # Add lazygit
     - role: lazygit
+
+    # Add miniconda via ansible-galazy andrewrothstein.miniconda role
+    - role: andrewrothstein.miniconda
+      vars:
+        miniconda_escalate: false

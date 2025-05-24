@@ -15,3 +15,9 @@ r_symlink_target_dir: "/usr/local/bin"
 r_executables_to_symlink:
   - R
   - Rscript
+
+# Additional system dependencies
+r_package_build_dependencies:
+  - libcurl4-openssl-dev
+  - libharfbuzz-dev
+  - libfribidi-dev

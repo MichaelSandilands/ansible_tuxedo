@@ -1,6 +1,15 @@
 ---
 # roles/R/tasks/main.yml
 
+- name: "Ensure common R package build dependencies are installed"
+  become: true
+  ansible.builtin.apt:
+    name: "{{ r_package_build_dependencies }}"
+    state: present
+    update_cache: yes # Good to update cache before installing new packages
+  retries: 3 # Add retries for robustness
+  delay: 5
+
 - name: "Install R version {{ r_target_version }} using appsilon.r_language role"
   ansible.builtin.include_role:
     name: appsilon.r_language
