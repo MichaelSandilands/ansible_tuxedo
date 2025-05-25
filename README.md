@@ -16,6 +16,7 @@ rm requirements.yml
 
 # Provision Machine
 ansible-pull -U "https://github.com/MichaelSandilands/ansible_tuxedo.git" -K
+# The ansible.cfg file will ensure the user is prompted for a vault password. 
 ```
 
 ## `ansible-galaxy install`
@@ -30,4 +31,5 @@ Pulls playbooks from a version control system and executes them on target host.
 
 - `-U`: URL of the playbook repository
 - `-K`: ask for privilege escalation password
-- `-J`: ask for vault password
+
+The ansible.cfg file will ensure the user is prompted for a vault password. 
