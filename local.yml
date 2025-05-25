@@ -56,19 +56,8 @@
         docker_users:
           - "{{ ansible_user_id }}" # Adds the current ansible user to the docker group
 
-    # Add quarto via ansible-galaxy Appsilon.quarto
-    - role: Appsilon.quarto
-      become: true
-
-    # Add R via ansible-galaxy appsilon.r_language
-    - role: R
-      become: true
-
     # Install devpod
     - role: devpod
 
     # Add lazygit
     - role: lazygit
-
-    # Add miniconda
-    - role: miniconda
