@@ -1,23 +1,7 @@
 # requirements.yml
 
 roles:
-  # Neovim
-  - src: gikeymarcia.neovim
-    # You can specify a version if needed, e.g.:
-    # version: 7.4.7
-
   # Docker
   - src: geerlingguy.docker
     # You can specify a version if needed, e.g.:
     # version: 7.4.7
-
-  # Quarto
-  - src: Appsilon.quarto
-    # You can specify a version if needed, e.g.:
-    # version: 1.0.2
-
-  # R
-  - src: appsilon.r_language
-    # You can specify a version if needed, e.g.:
-    # version: 0.1.4
-
