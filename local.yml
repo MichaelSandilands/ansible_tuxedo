@@ -34,20 +34,20 @@
     - role: git
 
     # Add and Obsidian via flatpak
-    - role: flatpak
+    # - role: flatpak
 
     # Add kitty terminal
-    - role: kitty
+    # - role: kitty
 
     # Add starship prompt
-    - role: starship
+    # - role: starship
 
     # Add JetBrainsMono Nerd Font
     - role: nerdfont
 
     # Add neovim via ansible-galazy gikeymarcia.neovim role
-    - role: gikeymarcia.neovim
-      become: true
+    # - role: gikeymarcia.neovim
+    #   become: true
 
     # Add docker via ansible-galaxy geerlingguy.docker
     - role: geerlingguy.docker
@@ -57,7 +57,7 @@
           - "{{ ansible_user_id }}" # Adds the current ansible user to the docker group
 
     # Install devpod
-    - role: devpod
+    # - role: devpod
 
     # Add lazygit
-    - role: lazygit
+    # - role: lazygit
