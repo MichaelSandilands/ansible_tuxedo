@@ -1,6 +1,6 @@
 # Personal Tuxedo OS Environment
 
-To run this playbook on a completely fress install of Tuxedo OS:
+To run this playbook on a completely fresh install of Tuxedo OS:
 
 ```bash
 # Update apt repository cache and upgrade machine
@@ -15,5 +15,19 @@ ansible-galaxy install -r requirements.yml
 rm requirements.yml
 
 # Provision Machine
-ansible-pull -U https://github.com/MichaelSandilands/ansible_tuxedo.git -K -J
+ansible-pull -U "https://github.com/MichaelSandilands/ansible_tuxedo.git" -K -J
 ```
+
+## `ansible-galaxy install`
+
+Install ansible galaxy roles on the local system.
+
+- `-r`: A file containing a list of roles to be installed.
+
+## `ansible-pull`
+
+Pulls playbooks from a version control system and executes them on target host.
+
+- `-U`: URL of the playbook repository
+- `-K`: ask for privilege escalation password
+- `-J`: ask for vault password
