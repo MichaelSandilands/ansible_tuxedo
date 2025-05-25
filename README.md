@@ -15,7 +15,7 @@ ansible-galaxy install -r requirements.yml
 rm requirements.yml
 
 # Provision Machine
-ansible-pull -U "https://github.com/MichaelSandilands/ansible_tuxedo.git" -K -J
+ansible-pull -U "https://github.com/MichaelSandilands/ansible_tuxedo.git" -K
 ```
 
 ## `ansible-galaxy install`
