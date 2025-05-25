@@ -36,7 +36,7 @@
     # Add and Obsidian via flatpak
     - role: flatpak
 
-    Add starship prompt
+    # Add starship prompt
     - role: starship
 
     # Add JetBrainsMono Nerd Font
@@ -51,3 +51,6 @@
 
     # Install devpod
     # - role: devpod
+
+    # Add Kitty terminal
+    - role: kitty
