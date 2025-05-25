@@ -1,0 +1,22 @@
+# roles/neovim/defaults/main.yml
+
+# Version (git branch) of Neovim to build. For simplicity, fixed to stable.
+neovim_version: "stable"
+
+# Neovim repository URL
+neovim_repo_url: "https://github.com/neovim/neovim.git"
+
+# Parent directory for cloning the Neovim source code.
+# The actual source will be in '{{ neovim_build_parent_dir }}/neovim_source'
+neovim_build_parent_dir: "{{ ansible_env.HOME }}/build"
+
+# CMake build type (e.g., Release, Debug, RelWithDebInfo)
+neovim_cmake_build_type: "RelWithDebInfo"
+
+# Installation prefix for Neovim (e.g., /usr/local, /opt/neovim)
+# The binary will be at '{{ neovim_install_prefix }}/bin/nvim'
+neovim_install_prefix: "/usr/local"
+
+# Set to true to force rebuild and reinstall of the stable branch.
+neovim_force_rebuild: false
+

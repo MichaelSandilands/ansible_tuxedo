@@ -8,6 +8,7 @@ dev_tools:
   - fonts-noto-color-emoji
   - fzf
   - git
+  - golang-go
   - imagemagick
   - libmagickwand-dev
   - lua5.1

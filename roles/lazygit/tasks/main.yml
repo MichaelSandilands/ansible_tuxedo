@@ -1,0 +1,67 @@
+# roles/lazygit/tasks/main.yml
+---
+- name: Check if Lazygit is already installed
+  ansible.builtin.stat:
+    path: "{{ lazygit_binary_path }}"
+  register: lazygit_binary_stat
+
+- name: Display Lazygit installation status
+  ansible.builtin.debug:
+    msg: "Lazygit binary found at {{ lazygit_binary_path }}. Build/install will be skipped unless lazygit_force_rebuild is true."
+  when: lazygit_binary_stat.stat.exists and not lazygit_force_rebuild
+
+- name: Ensure Lazygit build parent directory exists
+  ansible.builtin.file:
+    path: "{{ lazygit_build_parent_dir }}"
+    state: directory
+    mode: '0755'
+  when: not lazygit_binary_stat.stat.exists or lazygit_force_rebuild
+
+- name: Clone or update Lazygit repository
+  ansible.builtin.git:
+    repo: "{{ lazygit_repo_url }}"
+    dest: "{{ lazygit_source_dir }}"
+    version: "{{ lazygit_version }}"
+    force: yes # Ensures the correct version is checked out
+  register: lazygit_git_clone
+  when: not lazygit_binary_stat.stat.exists or lazygit_force_rebuild
+
+- name: Ensure Go bin directory exists for installation
+  ansible.builtin.file:
+    path: "{{ go_bin_dir }}"
+    state: directory
+    mode: '0755'
+  # This task should run if we are about to build/install
+  when: not lazygit_binary_stat.stat.exists or lazygit_force_rebuild
+
+- name: Build and install Lazygit from source
+  ansible.builtin.command:
+    cmd: "go install ." # Assumes Go 1.16+
+    chdir: "{{ lazygit_source_dir }}"
+  environment:
+    # Ensure GOBIN is set, or rely on default $HOME/go/bin if GOPATH isn't explicitly managed
+    # If your Go installation sets up PATH correctly, this might not be strictly needed
+    # PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin:{{ go_bin_dir }}" # Example if Go isn't in default PATH
+    # GOBIN: "{{ go_bin_dir }}" # Explicitly set GOBIN
+    PATH: "{{ ansible_env.PATH }}" # Start with existing PATH; Go binaries should be found if Go installed system-wide
+  register: lazygit_go_install
+  # Build/install if not installed, or forced, or if git clone updated source
+  when: (not lazygit_binary_stat.stat.exists or lazygit_force_rebuild or lazygit_git_clone.changed)
+  changed_when: lazygit_go_install.rc == 0 # Mark as changed if command succeeds
+
+- name: Ensure '~/go/bin' is in .bashrc PATH
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      # Add Go binaries to PATH
+      if [ -d "$HOME/go/bin" ] ; then
+        export PATH="$HOME/go/bin:$PATH"
+      fi
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for Go PATH"
+    create: yes
+    mode: '0644'
+  # This should run to ensure PATH is set, regardless of whether lazygit was just installed,
+  # as Go might have been installed by apt role in the same run.
+  # However, for strict idempotency based on this role's action:
+  # when: lazygit_go_install.changed
+

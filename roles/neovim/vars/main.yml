@@ -1,0 +1,25 @@
+# roles/neovim/vars/main.yml
+
+# Build dependencies for Neovim
+# build-essential and curl are often installed by other roles (like your 'apt' role)
+# but listed here for completeness if this role were used standalone.
+neovim_build_dependencies:
+  - ninja-build
+  - gettext
+  - libtool
+  - libtool-bin
+  - autoconf
+  - automake
+  - cmake
+  - g++
+  - pkg-config
+  - unzip
+  - curl
+  - build-essential # Includes make, gcc, etc.
+
+# Path to the cloned Neovim source directory
+neovim_source_dir: "{{ neovim_build_parent_dir }}/neovim_source"
+
+# Path where the nvim binary will be installed
+neovim_binary_path: "{{ neovim_install_prefix }}/bin/nvim"
+

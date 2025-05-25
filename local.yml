@@ -54,3 +54,9 @@
 
     # Add Kitty terminal
     - role: kitty
+
+    # Add Neovim
+    - role: neovim
+
+    # Add Lazygit
+    - role: lazygit 
