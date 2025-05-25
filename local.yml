@@ -50,7 +50,7 @@
           - "{{ ansible_user_id }}" # Adds the current ansible user to the docker group
 
     # Install devpod
-    # - role: devpod
+    - role: devpod
 
     # Add Kitty terminal
     - role: kitty
