@@ -7,7 +7,7 @@ To run this playbook on a completely fresh install of Tuxedo OS:
 sudo apt update && sudo apt upgrade -y
 
 # Install ansible
-sudo apt install ansible
+sudo apt install ansible -y
 
 # Install ansible-galaxy roles
 curl -L -o requirements.yml "https://raw.githubusercontent.com/MichaelSandilands/ansible_tuxedo/refs/heads/main/requirements.yml"
