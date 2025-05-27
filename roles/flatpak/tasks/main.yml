@@ -1,8 +1,0 @@
----
-# roles/flatpak/tasks/main.yml
-- name: Ensure Flatpak packages are installed for the current user
-  community.general.flatpak:
-    name: "{{ item }}"
-    state: present
-    method: user # Assuming user installation is preferred
-  loop: "{{ flatpak_packages }}"

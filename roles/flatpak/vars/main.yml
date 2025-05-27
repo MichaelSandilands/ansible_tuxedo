@@ -1,3 +1,0 @@
-# roles/flatpak/vars/main.yml
-flatpak_packages:
-  - md.obsidian.Obsidian
