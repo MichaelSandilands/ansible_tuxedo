@@ -33,12 +33,6 @@
     # Add user.name and user.email to .gitconfig
     - role: git
 
-    # Add and Obsidian via flatpak
-    - role: flatpak
-
-    # Add starship prompt
-    - role: starship
-
     # Add JetBrainsMono Nerd Font
     - role: nerdfont
 
@@ -48,15 +42,3 @@
       vars:
         docker_users:
           - "{{ ansible_user_id }}" # Adds the current ansible user to the docker group
-
-    # Install devpod
-    - role: devpod
-
-    # Add Kitty terminal
-    - role: kitty
-
-    # Add Neovim
-    - role: neovim
-
-    # Add Lazygit
-    - role: lazygit 
