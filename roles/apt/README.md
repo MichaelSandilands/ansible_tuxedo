@@ -18,6 +18,7 @@ This role installs the following packages, defined in `vars/main.yml`:
 * `git`: The popular version control system.
 * `imagemagick`: Software suite to create, edit, compose, or convert bitmap images.
 * `libmagickwand-dev`: Development files for ImageMagick.
+* `kitty`: Kitty Terminal
 * `lua5.1`, `liblua5.1-0-dev`, `luajit`: Lua programming language and its JIT compiler, along with development files.
 * `make`: GNU Make utility to maintain groups of programs.
 * `ripgrep`: A line-oriented search tool that recursively searches the current directory for a regex pattern.
