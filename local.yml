@@ -42,3 +42,6 @@
       vars:
         docker_users:
           - "{{ ansible_user_id }}" # Adds the current ansible user to the docker group
+
+    # Add starship role
+    - role: starship
