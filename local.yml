@@ -27,9 +27,6 @@
     # Add ssh key and config
     - role: ssh
 
-    # Install common developer tools
-    - role: apt
-
     # Add user.name and user.email to .gitconfig
     - role: git
 
