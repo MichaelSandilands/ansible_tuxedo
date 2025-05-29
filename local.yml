@@ -36,3 +36,23 @@
       vars:
         docker_users:
           - "{{ ansible_user_id }}" # Adds the current ansible user to the docker group
+
+    # Add Neovim via gikeymarcia.neovim
+    - role: gikeymarcia.neovim
+      become: true
+
+    # Add Starship Prompt via andrewrothstein.starship
+    - role: andrewrothstein.starship
+
+    - role: hurricanehrndz.nerdfonts
+      become: true
+      vars:
+        nerdfonts_mono: yes
+        nerdfonts_fonts:
+          - fontname: 'FiraCode' # Specify the base font name. 'nerdfonts_mono: yes' handles the mono aspect.
+        nerdfonts_users: [ "{{ ansible_user_id }}" ] 
+
+    - role: darkwizard242.lazygit
+      become: true
+      vars:
+        lazygit_version: 0.51.1
