@@ -94,3 +94,8 @@
 
     - role: Appsilon.quarto
       become: true
+
+    - role: andrewrothstein.miniconda
+      become: true
+      vars:
+        miniconda_make_sys_default: true  # This makes conda available in the system path

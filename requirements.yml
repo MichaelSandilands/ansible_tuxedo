@@ -23,3 +23,6 @@ roles:
 
   # Quarto
   - src: Appsilon.quarto
+
+  # Miniconda
+  - src: andrewrothstein.miniconda
