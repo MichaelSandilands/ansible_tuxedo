@@ -20,3 +20,6 @@ roles:
 
   # R
   - src: Oefenweb.latest_r
+
+  # Quarto
+  - src: Appsilon.quarto

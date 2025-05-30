@@ -91,3 +91,6 @@
         r_packages:
           - name: tidyverse
           - name: tidymodels
+
+    - role: Appsilon.quarto
+      become: true
