@@ -16,12 +16,39 @@
       ansible.builtin.apt:
         upgrade: dist
 
+    - name: Install apt packages
+      become: true
+      ansible.builtin.apt:
+        pkg:
+          - fd-find
+          - fzf
+          - kitty
+          - libcurl4-openssl-dev
+          - libfontconfig1-dev
+          - libfreetype6-dev
+          - libfribidi-dev
+          - libharfbuzz-dev
+          - libjpeg-dev
+          - libpng-dev
+          - libssl-dev
+          - libtiff5-dev
+          - libxml2-dev
+          - ripgrep
+          - tmux
+          - xclip
+
     - name: Add the flathub flatpak repository remote to the user installation
+      become: true
       community.general.flatpak_remote:
         name: flathub
         state: present
         flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
-        method: user
+
+    - name: Install flatpak packages
+      become: true
+      community.general.flatpak:
+        name: md.obsidian.Obsidian
+        state: present
 
   roles:
     # Add ssh key and config
@@ -56,3 +83,11 @@
       become: true
       vars:
         lazygit_version: 0.51.1
+
+    - role: Oefenweb.latest_r
+      become: true
+      vars:
+        r_install_dev: true
+        r_packages:
+          - name: tidyverse
+          - name: tidymodels

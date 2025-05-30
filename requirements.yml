@@ -17,3 +17,6 @@ roles:
 
   # Lazygit
   - src: darkwizard242.lazygit
+
+  # R
+  - src: Oefenweb.latest_r
