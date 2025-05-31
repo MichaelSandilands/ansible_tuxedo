@@ -33,6 +33,7 @@
           - libssl-dev
           - libtiff5-dev
           - libxml2-dev
+          - stow
           - ripgrep
           - tmux
           - xclip
