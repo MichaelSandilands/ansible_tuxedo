@@ -1,0 +1,13 @@
+name: datascience_stack
+channels:
+  - conda-forge
+  - defaults # Good to include for fallback
+dependencies:
+  - python=3.10 # Specify your preferred Python version
+  - pandas
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - jupyterlab # For an interactive IDE
+  - notebook # For classic Jupyter notebooks

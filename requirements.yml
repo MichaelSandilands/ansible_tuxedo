@@ -27,6 +27,9 @@ roles:
   # Miniconda
   - src: andrewrothstein.miniconda
 
+  # Conda
+  - src: andrewrothstein.conda-env
+
   # Node.js and npm
   - src: geerlingguy.nodejs
 
