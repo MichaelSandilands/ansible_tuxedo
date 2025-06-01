@@ -26,3 +26,9 @@ roles:
 
   # Miniconda
   - src: andrewrothstein.miniconda
+
+  # Node.js and npm
+  - src: geerlingguy.nodejs
+
+  # Rust
+  - src: hurricanehrndz.rustup

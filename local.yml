@@ -20,7 +20,6 @@
       become: true
       ansible.builtin.apt:
         pkg:
-          - fd-find
           - fzf
           - kitty
           - libcurl4-openssl-dev
@@ -33,8 +32,8 @@
           - libssl-dev
           - libtiff5-dev
           - libxml2-dev
+          - luarocks
           - stow
-          - ripgrep
           - tmux
           - xclip
 
@@ -100,3 +99,14 @@
       become: true
       vars:
         miniconda_make_sys_default: true  # This makes conda available in the system path
+
+    - role: geerlingguy.nodejs
+      become: true
+      vars:
+        nodejs_version: "20.x"
+        nodejs_install_npm_user: "{{ ansible_user_id }}"
+
+    - role: hurricanehrndz.rustup
+      become: true # The role handles become internally for necessary tasks
+      vars:
+        rustup_user: "{{ ansible_user_id }}"
