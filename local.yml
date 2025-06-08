@@ -89,7 +89,7 @@
       vars:
         r_install_dev: true
         r_packages:
-          - name: r-languageserver
+          - name: languageserver
           - name: tidyverse
           - name: tidymodels
 
