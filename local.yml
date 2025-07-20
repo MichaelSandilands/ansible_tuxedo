@@ -89,9 +89,10 @@
       vars:
         r_install_dev: true
         r_packages:
-          - name: languageserver
-          - name: tidyverse
-          - name: tidymodels
+          - name: languageserver # Required for nvim config file
+          - name: styler # Required for nvim autocompletion
+          - name: tidyverse # Data wrangling meta package
+          - name: tidymodels # Modeling meta package
 
     - role: Appsilon.quarto
       become: true

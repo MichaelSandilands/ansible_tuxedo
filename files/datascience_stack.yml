@@ -11,3 +11,6 @@ dependencies:
   - seaborn
   - jupyterlab # For an interactive IDE
   - notebook # For classic Jupyter notebooks
+  - black # Python code formatter
+  - isort # Sort imports alphabetically
+  - sqlfluff # SQL linter and formatter

@@ -1,6 +1,8 @@
 # Personal Tuxedo OS Environment
 
-To run this playbook on a completely fresh install of Tuxedo OS:
+This playbook is my personal setup for Ubuntu 24.04 based distributions. Specifically, my Tuxedo OS distribution.
+
+##  To run this playbook on a completely fresh install of Tuxedo OS:
 
 ```bash
 # Update apt repository cache and upgrade machine
