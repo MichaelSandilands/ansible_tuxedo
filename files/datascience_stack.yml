@@ -14,4 +14,4 @@ dependencies:
   - neovim
   - black # Python code formatter
   - isort # Sort imports alphabetically
-  - sqlfluff # SQL linter and formatter
+  - nb_conda_kernels
