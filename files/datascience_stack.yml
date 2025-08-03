@@ -1,17 +1,88 @@
+# ===================================================================
+#          MODULAR DATA SCIENCE CONDA ENVIRONMENT
+# ===================================================================
+# This environment is structured by function to allow for easy
+# customization. Comment out sections you don't need for a
+# lightweight setup.
+#
+# To create the environment:
+# conda env create -f environment.yml
+#
+# To update the environment after changes:
+# conda env update --file environment.yml --prune
+# ===================================================================
+
 name: datascience_stack
 channels:
   - conda-forge
-  - defaults # Good to include for fallback
+  - defaults
+
 dependencies:
-  - python=3.10 # Specify your preferred Python version
+  # -- Core Environment ---------------------------------------------
+  - python=3.10
+
+  # -- Data Wrangling & Manipulation --------------------------------
   - pandas
   - numpy
+
+  # -- Databases ----------------------------------------------------
+  - sqlalchemy  # Core SQL toolkit and Object Relational Mapper
+  - sqlite      # Ensures a conda-managed SQLite version
+  # - psycopg2    # Placeholder: Driver for PostgreSQL
+  # - mysql-connector-python # Placeholder: Driver for MySQL
+
+  # -- Machine Learning ---------------------------------------------
+  # Core ML
   - scikit-learn
+  # Deep Learning Placeholders
+  # - tensorflow  # Placeholder: For Google's DL framework
+  # - pytorch     # Placeholder: For Meta's DL framework
+  # - keras       # Placeholder: High-level API for TF/PyTorch
+
+  # -- Time-Series Analysis -----------------------------------------
+  # - prophet     # Placeholder: Forecasting library by Meta
+  # - statsmodels # Placeholder: For statistical models and tests
+
+  # -- Visualization ------------------------------------------------
   - matplotlib
   - seaborn
-  - jupyterlab # For an interactive IDE
-  - notebook # For classic Jupyter notebooks
+  - plotly
+
+  # -- Jupyter Ecosystem --------------------------------------------
+  # Jupyter Core
+  - jupyterlab      # The full IDE-like interface
+  - notebook        # For classic notebook interface
+  - jupyter_client
+  - nbformat
+  # Jupyter Kernels
+  - nb_conda_kernels # Makes conda environments visible as kernels
+  - ipykernel        # The default Python kernel for Jupyter
+
+  # -- Neovim Integration -------------------------------------------
   - neovim
-  - black # Python code formatter
-  - isort # Sort imports alphabetically
-  - nb_conda_kernels
+  - pynvim
+
+  # -- Code Quality & IDE Features ----------------------------------
+  # Linters & Formatters
+  - black
+  - isort
+  # Language Server (for code completion, diagnostics, etc.)
+  # - pyright       # Recommended: Add for full LSP features
+
+  # -- Web App & API Development ------------------------------------
+  # API Frameworks
+  # - fastapi       # Placeholder: Modern, fast web framework for APIs
+  # - uvicorn       # Placeholder: ASGI server for FastAPI
+  # Interactive Dashboards
+  # - streamlit     # Placeholder: For creating interactive web apps
+
+  # -- Web Scraping & API Interaction -------------------------------
+  - requests
+  - beautifulsoup4
+
+  # -- MLOps (Machine Learning Operations) --------------------------
+  # - mlflow        # Placeholder: For experiment tracking and model management
+  # - dvc           # Placeholder: For data version control
+
+  # -- Utilities ----------------------------------------------------
+  - pyperclip
