@@ -108,7 +108,7 @@
         conda_env_name: datascience_stack # The name of the environment to create/manage
         conda_env_environment: files/datascience_stack.yml # Path to your environment definition file
         conda_env_update_if_present: true # Set to true to update if it already exists
-        conda_env_activate_for_login_shell: true # Makes this environment active for new login shells
+        conda_env_activate_for_login_shell: false # Makes this environment active for new login shells
 
     - role: geerlingguy.nodejs
       become: true
