@@ -12,9 +12,9 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install ansible -y
 
 # Install ansible-galaxy roles
-curl -L -o requirements.yml "https://raw.githubusercontent.com/MichaelSandilands/ansible_tuxedo/refs/heads/main/requirements.yml"
-ansible-galaxy install -r requirements.yml
-rm requirements.yml
+curl -L -o temp_requirements.yml "https://raw.githubusercontent.com/MichaelSandilands/ansible_tuxedo/refs/heads/main/requirements.yml"
+ansible-galaxy install -r temp_requirements.yml
+rm temp_requirements.yml
 
 # Provision Machine
 ansible-pull -U "https://github.com/MichaelSandilands/ansible_tuxedo.git" -K
