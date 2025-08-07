@@ -101,7 +101,7 @@
         lazygit_version: 0.51.1
 
     - role: Oefenweb.latest_r
-      become: true
+      become: false
       vars:
         r_install_dev: true
         r_packages:
