@@ -66,6 +66,14 @@
         version: master   # You can pin this to a specific tag for better reproducibility
         depth: 1          # Creates a shallow clone without the full history, which is faster
 
+    - name: Create R package directory for user
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/R/library"
+        state: directory
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_gid }}"
+        mode: '0755'
+
   roles:
     # Add ssh key and config
     - role: ssh
