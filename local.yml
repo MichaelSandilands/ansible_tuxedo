@@ -106,6 +106,7 @@
         r_install_dev: true
         r_packages:
           - name: languageserver # Required for nvim config file
+          - name: reticulate
           - name: styler # Required for nvim autocompletion
           - name: tidyverse # Data wrangling meta package
           - name: tidymodels # Modeling meta package
