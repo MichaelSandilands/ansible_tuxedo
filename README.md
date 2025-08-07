@@ -19,15 +19,18 @@ rm temp_requirements.yml
 # Provision Machine
 ansible-pull -U "https://github.com/MichaelSandilands/ansible_tuxedo.git" -K
 # The ansible.cfg file will ensure the user is prompted for a vault password. 
+
+# Reboot after Provision
+# reboot
 ```
 
-## `ansible-galaxy install`
+### `ansible-galaxy install`
 
 Install ansible galaxy roles on the local system.
 
 - `-r`: A file containing a list of roles to be installed.
 
-## `ansible-pull`
+### `ansible-pull`
 
 Pulls playbooks from a version control system and executes them on target host.
 
@@ -35,3 +38,26 @@ Pulls playbooks from a version control system and executes them on target host.
 - `-K`: ask for privilege escalation password
 
 The ansible.cfg file will ensure the user is prompted for a vault password. 
+
+## Post Install Operations
+
+### Add Tmux Plugins
+
+Enter tmux
+
+```bash
+tmux
+```
+Press prefix + I (capital i, as in Install) to fetch the plugin.
+
+### Initialise Conda
+
+```{bash}
+conda init
+```
+
+After restarting the terminal you can then activate the datascience_stack conda environment.
+
+```{bash}
+conda activate datascience_stack
+```
