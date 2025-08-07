@@ -136,3 +136,11 @@
       become: true # The role handles become internally for necessary tasks
       vars:
         rustup_user: "{{ ansible_user_id }}"
+
+  post_tasks:
+    - name: Install markdownlint-cli
+      become: true
+      community.general.npm:
+        name: markdownlint-cli
+        global: yes
+        state: present
