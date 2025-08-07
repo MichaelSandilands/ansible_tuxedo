@@ -101,9 +101,10 @@
         lazygit_version: 0.51.1
 
     - role: Oefenweb.latest_r
-      become: true
+      become: false
       vars:
         r_install_dev: true
+        r_packages_lib: "{{ ansible_env.HOME }}/R/library"
         r_packages:
           - name: languageserver # Required for nvim config file
           - name: reticulate
