@@ -50,6 +50,22 @@
         name: md.obsidian.Obsidian
         state: present
 
+    # Install Tmux Plugin Manager (tpm)
+    - name: Ensure ~/.tmux/plugins directory exists
+      become: false
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.tmux/plugins"
+        state: directory
+        mode: '0755'
+
+    - name: Clone tpm repository from GitHub
+      become: false
+      ansible.builtin.git:
+        repo: 'https://github.com/tmux-plugins/tpm.git'
+        dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+        version: master   # You can pin this to a specific tag for better reproducibility
+        depth: 1          # Creates a shallow clone without the full history, which is faster
+
   roles:
     # Add ssh key and config
     - role: ssh
