@@ -21,6 +21,9 @@ roles:
   # R
   - src: Oefenweb.latest_r
 
+  # RStudio Desktop
+  - src: Oefenweb.rstudio
+
   # Quarto
   - src: Appsilon.quarto
 

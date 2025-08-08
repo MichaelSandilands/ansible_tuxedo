@@ -120,6 +120,8 @@
           - name: tidyverse # Data wrangling meta package
           - name: tidymodels # Modeling meta package
 
+    - role: Oefenweb.rstudio
+
     - role: Appsilon.quarto
       become: true
 
