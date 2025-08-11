@@ -33,6 +33,7 @@
           - libtiff5-dev
           - libxml2-dev
           - luarocks
+          - ninja-build
           - stow
           - tmux
           - xclip
