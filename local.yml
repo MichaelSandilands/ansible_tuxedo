@@ -151,6 +151,13 @@
         rustup_user: "{{ ansible_user_id }}"
 
   post_tasks:
+    - name: Install devcontainer CLI
+      become: true
+      community.general.npm:
+        name: "@devcontainers/cli"
+        global: yes
+        state: present
+
     - name: Install markdownlint-cli
       become: true
       community.general.npm:
