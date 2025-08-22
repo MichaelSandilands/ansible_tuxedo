@@ -36,6 +36,7 @@
           - ninja-build
           - stow
           - tmux
+          - virt-manager
           - xclip
 
     - name: Add the flathub flatpak repository remote to the user installation
