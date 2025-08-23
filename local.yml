@@ -123,6 +123,7 @@
           - name: tidymodels # Modeling meta package
 
     - role: Oefenweb.rstudio
+      become: true
 
     - role: Appsilon.quarto
       become: true
