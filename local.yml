@@ -124,6 +124,8 @@
 
     - role: Oefenweb.rstudio
       become: true
+      vars:
+        rstudio_version: "2025.05.1-513"
 
     - role: Appsilon.quarto
       become: true
