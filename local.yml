@@ -28,6 +28,7 @@
           - libfribidi-dev
           - libharfbuzz-dev
           - libjpeg-dev
+          - libnode-dev
           - libpng-dev
           - libsodium-dev
           - libssl-dev
