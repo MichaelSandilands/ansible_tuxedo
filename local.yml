@@ -29,6 +29,7 @@
           - libharfbuzz-dev
           - libjpeg-dev
           - libpng-dev
+          - libsodium-dev
           - libssl-dev
           - libtiff5-dev
           - libxml2-dev
@@ -68,14 +69,6 @@
         version: master   # You can pin this to a specific tag for better reproducibility
         depth: 1          # Creates a shallow clone without the full history, which is faster
 
-    - name: Create R package directory for user
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/R/library"
-        state: directory
-        owner: "{{ ansible_user_id }}"
-        group: "{{ ansible_user_gid }}"
-        mode: '0755'
-
   roles:
     # Add ssh key and config
     - role: ssh
@@ -114,7 +107,7 @@
       become: true
       vars:
         r_install_dev: true
-        r_packages_lib: "{{ ansible_env.HOME }}/R/library"
+        r_packages_lib: "{{ ansible_env.HOME }}/R/x86_64-pc-linux-gnu-library/{{ r_version }}"
         r_packages:
           - name: languageserver # Required for nvim config file
           - name: reticulate
@@ -168,3 +161,11 @@
         name: markdownlint-cli
         global: yes
         state: present
+
+    - name: Add R library path to ~/.bashrc
+      become: false
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.bashrc"
+        line: 'export PATH="$PATH:{{ ansible_env.HOME }}/R/x86_64-pc-linux-gnu-library/{{ r_version }}"'
+        state: present
+        insertafter: EOF
