@@ -104,6 +104,11 @@
       vars:
         lazygit_version: 0.51.1
 
+    - role: Oefenweb.rstudio
+      become: true
+      vars:
+        rstudio_version: "2025.05.1-513"
+
     - role: Oefenweb.latest_r
       become: true
       vars:
@@ -116,11 +121,6 @@
           - name: tidyverse # Data wrangling meta package
           - name: tidymodels # Modeling meta package
           - name: modeltime
-
-    - role: Oefenweb.rstudio
-      become: true
-      vars:
-        rstudio_version: "2025.05.1-513"
 
     - role: Appsilon.quarto
       become: true
