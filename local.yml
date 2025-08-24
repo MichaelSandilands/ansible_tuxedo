@@ -3,6 +3,8 @@
 ---
 - name: Provision local Tuxedo OS machine for development
   hosts: localhost
+  vars:
+    r_version: "4.5"
 
   pre_tasks:
     - name: Update apt cache
@@ -69,6 +71,14 @@
         dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
         version: master   # You can pin this to a specific tag for better reproducibility
         depth: 1          # Creates a shallow clone without the full history, which is faster
+
+    - name: Add R library path to ~/.profile
+      become: false
+      ansible.builtin.lineinfile:
+        path: "{{ ansible_env.HOME }}/.profile"
+        line: 'export PATH="$PATH:{{ ansible_env.HOME }}/R/x86_64-pc-linux-gnu-library/{{ r_version }}"'
+        state: present
+        insertafter: EOF
 
   roles:
     # Add ssh key and config
