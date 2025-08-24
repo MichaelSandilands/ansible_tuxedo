@@ -115,6 +115,7 @@
           - name: styler # Required for nvim autocompletion
           - name: tidyverse # Data wrangling meta package
           - name: tidymodels # Modeling meta package
+          - name: modeltime
 
     - role: Oefenweb.rstudio
       become: true
