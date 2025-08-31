@@ -156,15 +156,8 @@
 
   post_tasks:
     - name: Install devcontainer CLI
-      become: true
+      become: false
       community.general.npm:
         name: "@devcontainers/cli"
-        global: yes
-        state: present
-
-    - name: Install markdownlint-cli
-      become: true
-      community.general.npm:
-        name: markdownlint-cli
         global: yes
         state: present
