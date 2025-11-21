@@ -1,0 +1,92 @@
+---
+# tasks/main.yml
+
+## 1. Install Kitty Terminal 🚀
+
+- name: 1.1 Download and install Kitty using the official installer script
+  # We use 'creates' to ensure this task is only run if the kitty application directory does not exist.
+  # This makes the installation step idempotent.
+  ansible.builtin.shell:
+    cmd: "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
+    chdir: "{{ ansible_env.HOME }}"
+  args:
+    creates: "{{ kitty_app_dir }}"
+
+## 2. Create Symlinks 🔗
+
+- name: 2.1 Ensure the local bin directory exists (for symlinks)
+  ansible.builtin.file:
+    path: "{{ kitty_local_bin }}"
+    state: directory
+    mode: '0755'
+
+- name: 2.2 Create symlink for 'kitty' executable
+  ansible.builtin.file:
+    src: "{{ kitty_bin_dir }}/kitty"
+    dest: "{{ kitty_local_bin }}/kitty"
+    state: link
+    force: true # Ensure the link is created/updated if it exists
+
+- name: 2.3 Create symlink for 'kitten' utility
+  ansible.builtin.file:
+    src: "{{ kitty_bin_dir }}/kitten"
+    dest: "{{ kitty_local_bin }}/kitten"
+    state: link
+    force: true
+
+## 3. Desktop Integration 🖥️
+
+- name: 3.1 Ensure the local share applications directory exists
+  ansible.builtin.file:
+    path: "{{ kitty_local_share_apps }}"
+    state: directory
+    mode: '0755'
+
+- name: 3.2 Copy the kitty.desktop file
+  ansible.builtin.copy:
+    src: "{{ kitty_app_dir }}/share/applications/kitty.desktop"
+    dest: "{{ kitty_local_share_apps }}/kitty.desktop"
+    remote_src: true # Source is on the remote machine
+
+- name: 3.3 Copy the optional kitty-open.desktop file
+  ansible.builtin.copy:
+    src: "{{ kitty_app_dir }}/share/applications/kitty-open.desktop"
+    dest: "{{ kitty_local_share_apps }}/kitty-open.desktop"
+    remote_src: true
+
+- name: 3.4 Update 'Exec' and 'Icon' paths in desktop files (Part 1 Icon)
+  # Uses the 'replace' module for idempotent string substitution.
+  # The 'readlink -f ~' logic is replaced by the Ansible fact 'ansible_env.HOME'.
+  ansible.builtin.replace:
+    path: "{{ item }}"
+    regexp: 'Icon=kitty'
+    replace: "Icon={{ kitty_app_dir }}/share/icons/hicolor/256x256/apps/kitty.png"
+  loop:
+    - "{{ kitty_local_share_apps }}/kitty.desktop"
+    - "{{ kitty_local_share_apps }}/kitty-open.desktop"
+
+- name: 3.5 Update 'Exec' and 'Icon' paths in desktop files (Part 2 Exec)
+  ansible.builtin.replace:
+    path: "{{ item }}"
+    regexp: 'Exec=kitty'
+    replace: "Exec={{ kitty_bin_dir }}/kitty"
+  loop:
+    - "{{ kitty_local_share_apps }}/kitty.desktop"
+    - "{{ kitty_local_share_apps }}/kitty-open.desktop"
+
+## 4. Default Terminal Configuration 📋
+
+- name: 4.1 Ensure the XDG config directory exists
+  ansible.builtin.file:
+    path: "{{ kitty_config_dir }}"
+    state: directory
+
+- name: 4.2 Set Kitty as the default terminal using xdg-terminals.list
+  # The 'lineinfile' module ensures the line exists and is unique, making it idempotent.
+  ansible.builtin.lineinfile:
+    path: "{{ kitty_config_dir }}/xdg-terminals.list"
+    line: 'kitty.desktop'
+    create: true
+    state: present
+    # Ensures no duplicates if the file already exists
+    regexp: '^kitty\.desktop$'

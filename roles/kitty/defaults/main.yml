@@ -1,0 +1,8 @@
+---
+# defaults/main.yml
+kitty_local_dir: "{{ ansible_env.HOME }}/.local"
+kitty_app_dir: "{{ kitty_local_dir }}/kitty.app"
+kitty_bin_dir: "{{ kitty_app_dir }}/bin"
+kitty_local_bin: "{{ kitty_local_dir }}/bin"
+kitty_local_share_apps: "{{ kitty_local_dir }}/share/applications"
+kitty_config_dir: "{{ ansible_env.HOME }}/.config"

@@ -82,6 +82,8 @@
     # Add user.name and user.email to .gitconfig
     - role: git
 
+    - role: kitty
+
     # Add docker via ansible-galaxy geerlingguy.docker
     - role: geerlingguy.docker
       become: true
@@ -109,25 +111,25 @@
       vars:
         lazygit_version: 0.51.1
 
-    - role: Oefenweb.latest_r
-      become: true
-      vars:
-        r_install_dev: true
-        r_packages_lib: "{{ ansible_env.HOME }}/R/library"
-        r_packages:
-          - name: languageserver # Required for nvim config file
-          - name: reticulate
-          - name: styler # Required for nvim autocompletion
-          - name: tidyverse # Data wrangling meta package
-          - name: tidymodels # Modeling meta package
+    # - role: Oefenweb.latest_r
+      # become: true
+      # vars:
+        # r_install_dev: true
+        # r_packages_lib: "{{ ansible_env.HOME }}/R/library"
+        # r_packages:
+          # - name: languageserver # Required for nvim config file
+          # - name: reticulate
+          # - name: styler # Required for nvim autocompletion
+          # - name: tidyverse # Data wrangling meta package
+          # - name: tidymodels # Modeling meta package
 
-    - role: Oefenweb.rstudio
-      become: true
-      vars:
-        rstudio_version: "2025.05.1-513"
+    # - role: Oefenweb.rstudio
+      # become: true
+      # vars:
+        # rstudio_version: "2025.05.1-513"
 
-    - role: Appsilon.quarto
-      become: true
+    # - role: Appsilon.quarto
+      # become: true
 
     - role: andrewrothstein.miniconda
       become: true
