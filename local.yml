@@ -21,7 +21,6 @@
       ansible.builtin.apt:
         pkg:
           - fzf
-          - kitty
           - libcurl4-openssl-dev
           - libfontconfig1-dev
           - libfreetype6-dev
