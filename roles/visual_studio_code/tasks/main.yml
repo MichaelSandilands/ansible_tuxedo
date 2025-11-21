@@ -18,8 +18,6 @@
     # Use creates to ensure the download and dearmor process only happens once.
     cmd: "wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/microsoft.gpg"
     creates: "/tmp/microsoft.gpg"
-  args:
-    warn: false # Suppress warning about using the shell module
 
 - name: 1.3 Install the GPG key to the keyrings directory
   ansible.builtin.copy:
