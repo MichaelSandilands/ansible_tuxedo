@@ -50,22 +50,27 @@ dependencies:
 
   # -- Jupyter Ecosystem --------------------------------------------
   # Jupyter Core
-  - jupyterlab      # The full IDE-like interface
-  - notebook        # For classic notebook interface
+  # - jupyterlab      # The full IDE-like interface
+  # - notebook        # For classic notebook interface
   - jupyter_client
   - nbformat
   # Jupyter Kernels
-  - nb_conda_kernels # Makes conda environments visible as kernels
+  # - nb_conda_kernels # Makes conda environments visible as kernels
   - ipykernel        # The default Python kernel for Jupyter
 
   # -- Neovim Integration -------------------------------------------
   - neovim
   - pynvim
 
+  # -- Molten Integration -------------------------------------------
+  - pillow
+  - websocket-client
+  - cairosvg
+
   # -- Code Quality & IDE Features ----------------------------------
   # Linters & Formatters
-  - black
-  - isort
+  # - black
+  # - isort
   # Language Server (for code completion, diagnostics, etc.)
   # - pyright       # Recommended: Add for full LSP features
 
@@ -86,3 +91,8 @@ dependencies:
 
   # -- Utilities ----------------------------------------------------
   - pyperclip
+
+  - pip
+  - pip:
+    - pnglatex
+    - kaleido
