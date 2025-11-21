@@ -36,8 +36,6 @@
     state: absent
   # This task cleans up the temp file even if the copy task failed, or if the copy task was skipped.
 
----
-
 ## 2. Add the APT Repository Source 📄
 
 - name: 2.1 Create /etc/apt/sources.list.d/vscode.sources file
@@ -54,8 +52,6 @@
     group: root
     mode: '0644'
   become: true
-
----
 
 ## 3. Update Cache and Install VS Code 💻
 
