@@ -1,0 +1,71 @@
+---
+# tasks/main.yml
+
+## 1. Prerequisites and GPG Key Setup 🔑
+
+- name: 1.1 Ensure prerequisites (wget, gpg) are installed
+  ansible.builtin.apt:
+    name:
+      - wget
+      - gpg
+      - apt-transport-https # Required for HTTPS sources
+    state: present
+    update_cache: true
+  become: true
+
+- name: 1.2 Download and dearmor the Microsoft signing key
+  ansible.builtin.shell:
+    # Use creates to ensure the download and dearmor process only happens once.
+    cmd: "wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/microsoft.gpg"
+    creates: "/tmp/microsoft.gpg"
+  args:
+    warn: false # Suppress warning about using the shell module
+
+- name: 1.3 Install the GPG key to the keyrings directory
+  ansible.builtin.copy:
+    src: "/tmp/microsoft.gpg"
+    dest: "/usr/share/keyrings/microsoft.gpg"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
+- name: 1.4 Remove temporary GPG key file
+  ansible.builtin.file:
+    path: "/tmp/microsoft.gpg"
+    state: absent
+  # This task cleans up the temp file even if the copy task failed, or if the copy task was skipped.
+
+---
+
+## 2. Add the APT Repository Source 📄
+
+- name: 2.1 Create /etc/apt/sources.list.d/vscode.sources file
+  ansible.builtin.copy:
+    dest: "/etc/apt/sources.list.d/vscode.sources"
+    content: |
+      Types: deb
+      URIs: https://packages.microsoft.com/repos/code
+      Suites: stable
+      Components: main
+      Architectures: amd64,arm64,armhf
+      Signed-By: /usr/share/keyrings/microsoft.gpg
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
+---
+
+## 3. Update Cache and Install VS Code 💻
+
+- name: 3.1 Update apt package cache
+  ansible.builtin.apt:
+    update_cache: true
+  become: true
+
+- name: 3.2 Install Visual Studio Code package
+  ansible.builtin.apt:
+    name: code
+    state: present
+  become: true

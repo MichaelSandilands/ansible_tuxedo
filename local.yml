@@ -84,6 +84,8 @@
 
     - role: kitty
 
+    - role: visual_studio_code
+
     # Add docker via ansible-galaxy geerlingguy.docker
     - role: geerlingguy.docker
       become: true
@@ -155,10 +157,10 @@
       vars:
         rustup_user: "{{ ansible_user_id }}"
 
-  post_tasks:
-    - name: Install devcontainer CLI
-      become: false
-      community.general.npm:
-        name: "@devcontainers/cli"
-        global: yes
-        state: present
+  # post_tasks:
+    # - name: Install devcontainer CLI
+      # become: false
+      # community.general.npm:
+        # name: "@devcontainers/cli"
+        # global: yes
+        # state: present
