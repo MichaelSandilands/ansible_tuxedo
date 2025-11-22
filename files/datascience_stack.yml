@@ -66,6 +66,7 @@ dependencies:
   - pillow
   - websocket-client
   - cairosvg
+  - jupytext
 
   # -- Code Quality & IDE Features ----------------------------------
   # Linters & Formatters
