@@ -61,3 +61,9 @@ After restarting the terminal you can then activate the datascience_stack conda 
 ```{bash}
 conda activate datascience_stack
 ```
+
+### Neovim & Molten Issues
+
+If you encounter issues with the molten or quarto plugins run the this command in neovim and restart nvim `:UpdateRemotePlugins`
+
+If you encounter kernel issues run jupyter kernel --kernel=python3 in the bash terminal.
