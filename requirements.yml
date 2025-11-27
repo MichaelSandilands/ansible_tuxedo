@@ -19,10 +19,10 @@ roles:
   - src: darkwizard242.lazygit
 
   # R
-  - src: Oefenweb.latest_r
+  # - src: Oefenweb.latest_r
 
   # RStudio Desktop
-  - src: Oefenweb.rstudio
+  # - src: Oefenweb.rstudio
 
   # Quarto
   - src: Appsilon.quarto
