@@ -60,4 +60,4 @@
   loop:
     - atim/starship
     - iucar/rstudio
-    - wez/wezterm
+    # - wez/wezterm # Not supported in Fedora 44 yet
