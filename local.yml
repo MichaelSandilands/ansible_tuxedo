@@ -1,0 +1,63 @@
+---
+- name: Provision Local Tuxedo Computer (Fedora)
+  hosts: localhost
+  become: true
+
+  vars:
+    # SUDO_USER is guaranteed defined by the assert in pre_tasks below, so we
+    # can reference it directly as the single source of truth for "who am I
+    # actually provisioning for" when the play itself runs as root.
+    target_user: "{{ ansible_env.SUDO_USER }}"
+    target_home: "/home/{{ ansible_env.SUDO_USER }}"
+
+  pre_tasks:
+    - name: Enforce execution via sudo (prevent native root)
+      ansible.builtin.assert:
+        that:
+          - ansible_env.SUDO_USER is defined
+        fail_msg: >-
+          FATAL: This playbook must be run via sudo by a standard user.
+          Running directly from a native root shell is prohibited to prevent
+          configurations from being dumped into /root or /home/root.
+        success_msg: "Valid sudo user detected: {{ ansible_env.SUDO_USER }}"
+
+  roles:
+    # 1. Add third-party repositories and import their GPG keys.
+    - role: repositories
+
+    # 2. Install every system / dev package (refreshes the cache first).
+    - role: packages
+
+    # 3. Enable the Docker service and add the user to the docker group.
+    - role: docker
+      vars:
+        docker_user: "{{ target_user }}"
+
+    # 4. Install user-space dev tools fetched from vendor scripts (uv, Ollama).
+    - role: dev_tools
+      vars:
+        dev_tools_user: "{{ target_user }}"
+        dev_tools_home: "{{ target_home }}"
+
+    # 5. Deploy SSH keys / config and configure the global git identity.
+    - role: ssh_keys
+      vars:
+        ssh_keys_user: "{{ target_user }}"
+        ssh_keys_git_user_name: "MichaelSandilands"
+        ssh_keys_git_user_email: "michael.b.sandilands@gmail.com"
+        ssh_keys_pairs:
+          - name: github_key
+            public: github_key.pub
+            private: github_key
+          # - name: id_ed25519_ec2
+          #   public: id_ed25519_ec2.pub
+          #   private: id_ed25519_ec2
+
+    # 6. Clone dotfiles, stow them, and bootstrap tmux / neovim / starship.
+    - role: dotfiles
+      vars:
+        dotfiles_user: "{{ target_user }}"
+        dotfiles_home: "{{ target_home }}"
+
+    # 7. Configure unattended dnf updates.
+    - role: auto_updates

@@ -1,0 +1,49 @@
+---
+# ---------------------------------------------------------------------------
+# Astral's uv (user-space install)
+# ---------------------------------------------------------------------------
+- name: Check if uv is installed
+  ansible.builtin.command: command -v uv
+  become: true
+  become_user: "{{ dev_tools_user }}"
+  register: dev_tools_uv_check
+  changed_when: false
+  failed_when: false
+
+- name: Install uv (if missing)
+  # set -o pipefail so a failed curl is not masked by a successful sh.
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ dev_tools_user }}"
+  when: dev_tools_uv_check.rc != 0
+  changed_when: true
+
+- name: Update uv (if already installed)
+  ansible.builtin.command: "{{ dev_tools_home }}/.local/bin/uv self update"
+  become: true
+  become_user: "{{ dev_tools_user }}"
+  register: dev_tools_uv_update
+  changed_when: "'up to date' not in dev_tools_uv_update.stdout"
+  when: dev_tools_uv_check.rc == 0
+
+# ---------------------------------------------------------------------------
+# Ollama
+# ---------------------------------------------------------------------------
+# Ollama's installer registers a systemd service and a dedicated `ollama`
+# system user, which genuinely requires root. We run it as root *on purpose*
+# (explicit become, no become_user) rather than relying on inherited become.
+- name: Install or update Ollama
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -fsSL https://ollama.com/install.sh | sh
+  args:
+    executable: /bin/bash
+  become: true
+  register: dev_tools_ollama_install
+  # The script prints "Install complete" on both fresh installs and updates,
+  # so we treat it as changed only when it actually downloads a new build.
+  changed_when: "'Downloading' in dev_tools_ollama_install.stdout"

@@ -1,0 +1,22 @@
+{{ ansible_managed | comment }}
+[commands]
+# 'default' installs all updates. 'security' installs only security patches.
+upgrade_type = {{ auto_updates_upgrade_type }}
+# 0 runs the update immediately when the timer triggers.
+random_sleep = {{ auto_updates_random_sleep }}
+# Seconds to wait for the network to come online (0 would skip the check).
+network_online_timeout = {{ auto_updates_network_online_timeout }}
+# Download the RPMs to the local cache.
+download_updates = {{ auto_updates_download_updates }}
+# Actually install the downloaded packages.
+apply_updates = {{ auto_updates_apply_updates }}
+# Reboot policy after applying updates.
+reboot = {{ auto_updates_reboot }}
+
+[emitters]
+# Where to send the result of the update run.
+emit_via = {{ auto_updates_emit_via }}
+
+[base]
+# Detail level of the logs.
+debuglevel = {{ auto_updates_debuglevel }}

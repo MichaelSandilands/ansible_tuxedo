@@ -1,0 +1,36 @@
+---
+# Single idempotent install of everything. update_cache refreshes metadata
+# (picking up the repositories role's additions) before installing. We use
+# state: present (not latest) so re-runs are idempotent; ongoing patching is
+# handled by the auto_updates role.
+- name: Install system and dev packages
+  ansible.builtin.dnf:
+    name: "{{ packages_base + (packages_r_system if packages_install_r else []) }}"
+    state: present
+    update_cache: true
+
+# --- Optional R user library -------------------------------------------------
+# Only runs when packages_install_r is true. target_user / target_home are
+# provided by the playbook.
+- name: Ensure R user library exists
+  ansible.builtin.file:
+    path: "{{ target_home }}/R/library"
+    state: directory
+    owner: "{{ target_user }}"
+    group: "{{ target_user }}"
+    mode: "0755"
+  when: packages_install_r
+
+- name: Install R packages into the user library
+  ansible.builtin.command:
+    cmd: >-
+      Rscript -e ".libPaths(c('~/R/library', .libPaths()));
+      pkgs <- strsplit('{{ packages_r_user | join(' ') }}', ' ')[[1]];
+      missing <- pkgs[!pkgs %in% installed.packages()[, 'Package']];
+      if (length(missing)) install.packages(missing,
+      repos = 'https://cloud.r-project.org', lib = '~/R/library')"
+  become: true
+  become_user: "{{ target_user }}"
+  register: packages_r_install
+  changed_when: "'installing' in (packages_r_install.stderr | lower)"
+  when: packages_install_r

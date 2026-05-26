@@ -1,0 +1,14 @@
+---
+# These run as root via the play-level become; they are root operations
+# (managing a system service and a system group) so no become_user is needed.
+- name: Enable and start the Docker service
+  ansible.builtin.systemd:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Add user to the docker group
+  ansible.builtin.user:
+    name: "{{ docker_user }}"
+    groups: docker
+    append: true

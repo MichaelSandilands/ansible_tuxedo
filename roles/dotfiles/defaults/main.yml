@@ -1,0 +1,25 @@
+---
+# Target user / home for the dotfiles deployment.
+dotfiles_user: "{{ ansible_env.SUDO_USER | default(ansible_user_id) }}"
+dotfiles_home: "/home/{{ dotfiles_user }}"
+
+# Source repository for the dotfiles.
+dotfiles_repo: "https://github.com/MichaelSandilands/dotfiles.git"
+
+# Stow packages (directory names inside the dotfiles repo) to symlink.
+dotfiles_stow_packages:
+  - kitty
+  - nvim
+  - tmux
+
+# Python packages for the Neovim provider venv (~/.virtualenvs/neovim).
+# pynvim and jupyter_client are required; the rest power Molten rendering.
+dotfiles_neovim_pip:
+  - pynvim
+  - jupyter_client
+  - cairosvg
+  - plotly
+  - kaleido
+  - pnglatex
+  - pyperclip
+  - nbformat

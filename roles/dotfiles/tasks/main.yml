@@ -1,0 +1,82 @@
+---
+# 1. Clone the dotfiles repository. We intentionally always pull the latest
+#    commit on every provision, so the non-idempotent "latest" warning is
+#    acknowledged rather than pinned to a fixed revision.
+- name: Clone dotfiles repository  # noqa: latest[git]
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_home }}/dotfiles"
+    update: true
+  become: true
+  become_user: "{{ dotfiles_user }}"
+
+# 2. Symlink the configurations with stow. --verbose makes stow report each
+#    link it creates on stderr, which lets us derive an honest changed_when
+#    instead of hard-coding changed_when: false. A genuine conflict (a real
+#    file where a symlink should go) makes stow exit non-zero and fail loudly,
+#    which is the desired behaviour.
+- name: Stow dotfiles
+  ansible.builtin.command:
+    cmd: "stow --verbose --target={{ dotfiles_home }} {{ item }}"
+    chdir: "{{ dotfiles_home }}/dotfiles"
+  loop: "{{ dotfiles_stow_packages }}"
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  register: dotfiles_stow
+  changed_when: "'LINK:' in dotfiles_stow.stderr"
+
+# 3. Install the Tmux Plugin Manager (TPM). Same intentional "always latest".
+- name: Ensure tmux plugin manager (tpm) is cloned  # noqa: latest[git]
+  ansible.builtin.git:
+    repo: "https://github.com/tmux-plugins/tpm"
+    dest: "{{ dotfiles_home }}/.tmux/plugins/tpm"
+    update: true
+  become: true
+  become_user: "{{ dotfiles_user }}"
+
+# 4. Install tmux plugins headlessly.
+- name: Install tmux plugins headlessly
+  ansible.builtin.command:
+    cmd: "{{ dotfiles_home }}/.tmux/plugins/tpm/bin/install_plugins"
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  environment:
+    TMUX_PLUGIN_MANAGER_PATH: "{{ dotfiles_home }}/.tmux/plugins/"
+  register: dotfiles_tpm_install
+  changed_when: >-
+    'Installing' in dotfiles_tpm_install.stdout
+    or 'download success' in dotfiles_tpm_install.stdout
+
+# 5. Neovim Python provider venv. Neovim's python3_host_prog points at
+#    ~/.virtualenvs/neovim, so the remote plugins (Molten et al.) load here.
+- name: Ensure ~/.virtualenvs directory exists
+  ansible.builtin.file:
+    path: "{{ dotfiles_home }}/.virtualenvs"
+    state: directory
+    owner: "{{ dotfiles_user }}"
+    group: "{{ dotfiles_user }}"
+    mode: "0755"
+  become: true
+  become_user: "{{ dotfiles_user }}"
+
+- name: Create the Neovim provider venv and install remote-plugin dependencies
+  ansible.builtin.pip:
+    name: "{{ dotfiles_neovim_pip }}"
+    virtualenv: "{{ dotfiles_home }}/.virtualenvs/neovim"
+    virtualenv_command: python3 -m venv
+  become: true
+  become_user: "{{ dotfiles_user }}"
+
+# 6. Initialize Starship in .bashrc. mode is set so a freshly-created .bashrc
+#    gets predictable permissions rather than whatever the umask happens to be.
+- name: Add Starship initialization to .bashrc
+  ansible.builtin.lineinfile:
+    path: "{{ dotfiles_home }}/.bashrc"
+    line: 'eval "$(starship init bash)"'
+    state: present
+    create: true
+    owner: "{{ dotfiles_user }}"
+    group: "{{ dotfiles_user }}"
+    mode: "0644"
+  become: true
+  become_user: "{{ dotfiles_user }}"

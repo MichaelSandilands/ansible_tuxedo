@@ -1,0 +1,3 @@
+---
+# User to add to the docker group. Defaults to the invoking sudo user.
+docker_user: "{{ ansible_env.SUDO_USER | default(ansible_user_id) }}"

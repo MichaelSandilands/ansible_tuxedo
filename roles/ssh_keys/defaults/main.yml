@@ -1,0 +1,27 @@
+---
+# Target user to configure SSH for.
+ssh_keys_user: "{{ ansible_env.SUDO_USER | default(ansible_user_id) }}"
+ssh_keys_home: "/home/{{ ssh_keys_user }}"
+ssh_keys_dir: "{{ ssh_keys_home }}/.ssh"
+
+# Git identity. Left empty here so the playbook is the single source of truth;
+# the tasks only apply these when non-empty.
+ssh_keys_git_user_name: ""
+ssh_keys_git_user_email: ""
+
+# List of SSH key pairs to deploy. Each entry has:
+#   - name:    key filename stem
+#   - public:  public key filename in files/
+#   - private: vault-encrypted private key filename in files/
+ssh_keys_pairs: []
+
+# SSH config files to deploy (filenames in files/).
+ssh_keys_config_files:
+  - config
+
+# Optional list of git signing config (key/value pairs). Undefined by default.
+# ssh_keys_git_signing:
+#   - { key: gpg.format,      value: ssh }
+#   - { key: user.signingKey, value: "~/.ssh/github_key.pub" }
+#   - { key: commit.gpgSign,  value: "true" }
+#   - { key: tag.gpgSign,     value: "true" }

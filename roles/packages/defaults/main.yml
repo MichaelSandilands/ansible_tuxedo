@@ -1,0 +1,77 @@
+---
+# Toggle the optional R / data-science stack. Off by default; flip to true
+# (e.g. in the playbook or with -e packages_install_r=true) to pull in the R
+# core, build dependencies, and user packages. This replaces the large block
+# of commented-out package names the playbook used to carry.
+packages_install_r: false
+
+# Packages installed on every provision.
+packages_base:
+  # Tuxedo specific
+  - tuxedo-control-center
+  - tuxedo-drivers
+  - tuxedo-tomte-light
+  # Terminal & fonts
+  - cascadia-mono-nf-fonts
+  - kitty
+  - wezterm
+  - tmux
+  - starship
+  # Neovim & dependencies
+  - neovim
+  - python3-neovim
+  - luarocks
+  - ImageMagick
+  - compat-lua
+  - gcc                      # C compiler for nvim-treesitter parser compilation
+  - make                     # build step for telescope-fzf-native
+  - wl-clipboard             # Wayland clipboard provider (nvim clipboard=unnamedplus)
+  # Nvidia (drivers + CUDA for LLM & data science)
+  - akmod-nvidia
+  - xorg-x11-drv-nvidia-cuda
+  # Docker
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin
+  # Quarto
+  - quarto
+  # Gaming
+  - steam
+  # System utilities
+  - stow
+
+# Optional R / data-science system packages (installed only when
+# packages_install_r is true). Served by the iucar/rstudio COPR enabled in
+# the repositories role.
+packages_r_system:
+  - R
+  # Tidyverse / dev dependencies
+  - openssl-devel
+  - libcurl-devel
+  - libxml2-devel
+  - fontconfig-devel
+  - harfbuzz-devel
+  - fribidi-devel
+  - freetype-devel
+  - libpng-devel
+  - libtiff-devel
+  - libjpeg-turbo-devel
+  - cmake
+  - gcc-c++
+  # Geospatial (sf / terra)
+  - gdal-devel
+  - proj-devel
+  - geos-devel
+  - sqlite-devel
+  - udunits2-devel
+  # Prophet / V8
+  - v8-devel
+
+# R packages installed into the user library when packages_install_r is true.
+packages_r_user:
+  - tidyverse
+  - tidymodels
+  - modeltime
+  - timetk

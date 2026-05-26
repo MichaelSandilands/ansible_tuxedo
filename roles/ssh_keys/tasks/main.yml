@@ -1,0 +1,86 @@
+---
+# 1. Ensure ~/.ssh exists with correct permissions.
+- name: Ensure .ssh directory exists
+  ansible.builtin.file:
+    path: "{{ ssh_keys_dir }}"
+    state: directory
+    owner: "{{ ssh_keys_user }}"
+    group: "{{ ssh_keys_user }}"
+    mode: "0700"
+
+# 2. Deploy the SSH config file(s). Runs as root (play become) and sets
+#    ownership explicitly, so no become_user is required.
+- name: Deploy SSH config files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ ssh_keys_dir }}/{{ item }}"
+    owner: "{{ ssh_keys_user }}"
+    group: "{{ ssh_keys_user }}"
+    mode: "0600"
+  loop: "{{ ssh_keys_config_files }}"
+
+# 3. Deploy public keys.
+- name: Deploy SSH public keys
+  ansible.builtin.copy:
+    src: "{{ item.public }}"
+    dest: "{{ ssh_keys_dir }}/{{ item.public }}"
+    owner: "{{ ssh_keys_user }}"
+    group: "{{ ssh_keys_user }}"
+    mode: "0644"
+  loop: "{{ ssh_keys_pairs }}"
+  loop_control:
+    label: "{{ item.public }}"
+
+# 4. Deploy vault-encrypted private keys. Ansible decrypts them in memory at
+#    copy time. no_log keeps key material out of the terminal.
+- name: Deploy SSH private keys (vault-encrypted)
+  ansible.builtin.copy:
+    src: "{{ item.private }}"
+    dest: "{{ ssh_keys_dir }}/{{ item.private }}"
+    owner: "{{ ssh_keys_user }}"
+    group: "{{ ssh_keys_user }}"
+    mode: "0600"
+  loop: "{{ ssh_keys_pairs }}"
+  loop_control:
+    label: "{{ item.private }}"
+  no_log: true
+
+# 5. Configure the global git identity. These run as the target user, so they
+#    set both become and become_user explicitly.
+- name: Set git user.name
+  community.general.git_config:
+    name: user.name
+    value: "{{ ssh_keys_git_user_name }}"
+    scope: global
+  become: true
+  become_user: "{{ ssh_keys_user }}"
+  when: ssh_keys_git_user_name | length > 0
+
+- name: Set git user.email
+  community.general.git_config:
+    name: user.email
+    value: "{{ ssh_keys_git_user_email }}"
+    scope: global
+  become: true
+  become_user: "{{ ssh_keys_user }}"
+  when: ssh_keys_git_user_email | length > 0
+
+- name: Set git default branch
+  community.general.git_config:
+    name: init.defaultBranch
+    value: main
+    scope: global
+  become: true
+  become_user: "{{ ssh_keys_user }}"
+
+- name: Set git SSH signing for commits
+  community.general.git_config:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    scope: global
+  become: true
+  become_user: "{{ ssh_keys_user }}"
+  loop: "{{ ssh_keys_git_signing }}"
+  loop_control:
+    label: "{{ item.key }}"
+  when: ssh_keys_git_signing is defined
