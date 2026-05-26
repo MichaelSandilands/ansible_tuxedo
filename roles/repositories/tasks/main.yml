@@ -55,8 +55,9 @@
 
 - name: Enable COPR repositories (Starship, RStudio, WezTerm)
   community.general.copr:
-    name:
-      - atim/starship
-      - iucar/rstudio
-      - wez/wezterm
+    name: "{{ item }}"
     state: enabled
+  loop:
+    - atim/starship
+    - iucar/rstudio
+    - wez/wezterm
