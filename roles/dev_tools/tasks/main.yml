@@ -27,7 +27,7 @@
   become: true
   become_user: "{{ dev_tools_user }}"
   register: dev_tools_uv_update
-  changed_when: "'up to date' not in dev_tools_uv_update.stdout"
+  changed_when: "'Upgraded' in dev_tools_uv_update.stderr"
   when: dev_tools_uv_check.rc == 0
 
 # ---------------------------------------------------------------------------
