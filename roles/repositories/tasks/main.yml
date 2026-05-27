@@ -12,7 +12,7 @@
 
 - name: Import Tuxedo Computers GPG key
   ansible.builtin.rpm_key:
-    key: "https://rpm.tuxedocomputers.com/fedora/{{ ansible_facts.distribution_major_version }}/0x54840598.pub.asc"
+    key: "https://rpm.tuxedocomputers.com/fedora/{{ ansible_facts['distribution_major_version'] }}/0x54840598.pub.asc"
     state: present
 
 - name: Add Docker CE repository
@@ -29,8 +29,8 @@
 - name: Install RPM Fusion repositories
   ansible.builtin.dnf:
     name:
-      - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
-      - "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+      - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+      - "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
     state: present
     # The release RPMs are not signed by a key we hold yet; we import the
     # bundled keys in the next task. This bootstrap exception is intentional.
@@ -41,8 +41,8 @@
     key: "{{ item }}"
     state: present
   loop:
-    - "/etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-{{ ansible_distribution_major_version }}"
-    - "/etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-{{ ansible_distribution_major_version }}"
+    - "/etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-fedora-{{ ansible_facts['distribution_major_version'] }}"
+    - "/etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-nonfree-fedora-{{ ansible_facts['distribution_major_version'] }}"
 
 - name: Enable fedora-cisco-openh264 repository
   community.general.ini_file:
