@@ -7,8 +7,8 @@
     # SUDO_USER is guaranteed defined by the assert in pre_tasks below, so we
     # can reference it directly as the single source of truth for "who am I
     # actually provisioning for" when the play itself runs as root.
-    target_user: "{{ ansible_env.SUDO_USER }}"
-    target_home: "/home/{{ ansible_env.SUDO_USER }}"
+    target_user: "{{ ansible_facts.env.SUDO_USER }}"
+    target_home: "/home/{{ ansible_facts.env.SUDO_USER }}"
 
   pre_tasks:
     - name: Enforce execution via sudo (prevent native root)
