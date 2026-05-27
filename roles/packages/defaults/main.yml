@@ -14,7 +14,7 @@ packages_base:
   # Terminal & fonts
   - cascadia-mono-nf-fonts
   - kitty
-  - wezterm
+  # - wezterm
   - tmux
   - starship
   # Neovim & dependencies
