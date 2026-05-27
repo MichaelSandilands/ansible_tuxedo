@@ -1,6 +1,6 @@
 ---
 # Target user to configure SSH for.
-ssh_keys_user: "{{ ansible_env.SUDO_USER | default(ansible_user_id) }}"
+ssh_keys_user: "{{ ansible_facts.env.SUDO_USER | default(ansible_facts.user_id) }}"
 ssh_keys_home: "/home/{{ ssh_keys_user }}"
 ssh_keys_dir: "{{ ssh_keys_home }}/.ssh"
 

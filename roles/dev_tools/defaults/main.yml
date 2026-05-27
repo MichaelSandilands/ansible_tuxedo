@@ -1,4 +1,4 @@
 ---
 # User / home for user-space tool installs (uv). Defaults to the sudo user.
-dev_tools_user: "{{ ansible_env.SUDO_USER | default(ansible_user_id) }}"
+dev_tools_user: "{{ ansible_facts.env.SUDO_USER | default(ansible_facts.user_id) }}"
 dev_tools_home: "/home/{{ dev_tools_user }}"

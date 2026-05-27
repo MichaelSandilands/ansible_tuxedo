@@ -14,12 +14,12 @@
     - name: Enforce execution via sudo (prevent native root)
       ansible.builtin.assert:
         that:
-          - ansible_env.SUDO_USER is defined
+          - ansible_facts.env.SUDO_USER is defined
         fail_msg: >-
           FATAL: This playbook must be run via sudo by a standard user.
           Running directly from a native root shell is prohibited to prevent
           configurations from being dumped into /root or /home/root.
-        success_msg: "Valid sudo user detected: {{ ansible_env.SUDO_USER }}"
+        success_msg: "Valid sudo user detected: {{ ansible_facts.env.SUDO_USER }}"
 
   roles:
     # 1. Add third-party repositories and import their GPG keys.

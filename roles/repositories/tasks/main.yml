@@ -12,7 +12,7 @@
 
 - name: Import Tuxedo Computers GPG key
   ansible.builtin.rpm_key:
-    key: "https://rpm.tuxedocomputers.com/fedora/{{ ansible_distribution_major_version }}/0x54840598.pub.asc"
+    key: "https://rpm.tuxedocomputers.com/fedora/{{ ansible_facts.distribution_major_version }}/0x54840598.pub.asc"
     state: present
 
 - name: Add Docker CE repository
